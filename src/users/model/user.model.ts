@@ -4,7 +4,9 @@ import {
     Model,
     Table,
     BelongsToMany,
+    HasMany,
 } from "sequelize-typescript";
+import { Like } from "src/likes/model/like.model";
 import { Photo } from "src/photos/models/photo.model";
 import { UserPhoto } from "src/photos/models/userPhoto.model";
 
@@ -41,4 +43,7 @@ export class User extends Model<User, userAttrs> {
     // photo modeli Many to Many relationship qilish uchun
     @BelongsToMany(() => Photo, () => UserPhoto)
     photos: Photo[];
+
+    @HasMany(() => Like)
+    likes: Like[];
 }

@@ -3,12 +3,13 @@ import {
     DataType,
     Model,
     Table,
-    ForeignKey,
-    BelongsTo,
     BelongsToMany,
+    HasMany,
 } from "sequelize-typescript";
 import { UserPhoto } from "./userPhoto.model";
 import { User } from "src/users/model/user.model";
+import { Comment } from "src/comments/model/comment.model";
+import { Like } from "src/likes/model/like.model";
 
 interface photoAttrs {
     id: string;
@@ -40,4 +41,10 @@ export class Photo extends Model<Photo, photoAttrs> {
     // user table bilan Many-to-Many relationship qilish uchun
     @BelongsToMany(() => User, () => UserPhoto)
     users: User[];
+
+    @HasMany(() => Comment)
+    comments: Comment[];
+
+    @HasMany(() => Like)
+    likes: Like[];
 }
