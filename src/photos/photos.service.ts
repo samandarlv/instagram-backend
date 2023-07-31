@@ -3,7 +3,7 @@ import { CreatePhotoDto } from "./dto/create-photo.dto";
 import { UpdatePhotoDto } from "./dto/update-photo.dto";
 import { InjectModel } from "@nestjs/sequelize";
 import { Photo } from "./models/photo.model";
-import { User } from "src/users/model/user.model";
+import { User } from "../users/model/user.model";
 
 @Injectable()
 export class PhotosService {

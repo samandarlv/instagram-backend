@@ -2,15 +2,22 @@ import { Injectable } from "@nestjs/common";
 import { CreateUserDto } from "./dto/create-user.dto";
 import { UpdateUserDto } from "./dto/update-user.dto";
 import { InjectModel } from "@nestjs/sequelize";
+import * as bcrypt from "bcrypt";
 import { User } from "./model/user.model";
-import { UserPhoto } from "src/photos/models/userPhoto.model";
+import { UserPhoto } from "../photos/models/userPhoto.model";
 
 @Injectable()
 export class UsersService {
     constructor(@InjectModel(User) private userRepo: typeof User) {}
 
-    create(createUserDto: CreateUserDto): Promise<User> {
-        return this.userRepo.create(createUserDto);
+    async create(createUserDto: CreateUserDto): Promise<User> {
+        const hashedPassword = await bcrypt.hash(createUserDto.password, 7);
+        const { name, username } = createUserDto;
+        return this.userRepo.create({
+            name,
+            username,
+            hashed_password: hashedPassword,
+        });
     }
 
     findAll(): Promise<User[]> {
@@ -62,5 +69,13 @@ export class UsersService {
         if (deletedCount > 0) return { msg: "deleted successfully" };
 
         return { msg: "Not found by given id" };
+    }
+
+    async getUserByUsername(username: string): Promise<User> {
+        const user = await this.userRepo.findOne({
+            where: { username },
+            include: { all: true },
+        });
+        return user;
     }
 }

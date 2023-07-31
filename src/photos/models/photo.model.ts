@@ -4,15 +4,15 @@ import {
     Model,
     Table,
     BelongsToMany,
+    BelongsTo,
     HasMany,
 } from "sequelize-typescript";
 import { UserPhoto } from "./userPhoto.model";
-import { User } from "src/users/model/user.model";
-import { Comment } from "src/comments/model/comment.model";
-import { Like } from "src/likes/model/like.model";
+import { User } from "../../users/model/user.model";
+import { Comment } from "../../comment/models/comment.model";
+import { Like } from "../../likes/model/like.model";
 
 interface photoAttrs {
-    id: string;
     title: string;
     link: string;
 }
@@ -45,6 +45,6 @@ export class Photo extends Model<Photo, photoAttrs> {
     @HasMany(() => Comment)
     comments: Comment[];
 
-    @HasMany(() => Like)
-    likes: Like[];
+    @BelongsToMany(() => User, () => Like)
+    likes: User[];
 }

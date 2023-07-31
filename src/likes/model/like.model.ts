@@ -1,19 +1,18 @@
 import {
     BelongsTo,
-    BelongsToMany,
     Column,
     DataType,
     ForeignKey,
+    HasMany,
     Model,
     Table,
 } from "sequelize-typescript";
-import { Photo } from "src/photos/models/photo.model";
-import { User } from "src/users/model/user.model";
+import { Photo } from "../../photos/models/photo.model";
+import { User } from "../../users/model/user.model";
 
 interface LikeAttr {
     user_id: number;
     photo_id: number;
-    like: boolean;
 }
 
 @Table({ tableName: "likes" })
@@ -38,12 +37,6 @@ export class Like extends Model<Like, LikeAttr> {
         allowNull: false,
     })
     photo_id: number;
-
-    @Column({
-        type: DataType.BOOLEAN,
-        allowNull: false,
-    })
-    like: boolean;
 
     @BelongsTo(() => Photo)
     photo: Photo;

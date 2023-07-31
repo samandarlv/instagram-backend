@@ -1,42 +1,30 @@
 import {
-    BelongsTo,
     Column,
     DataType,
-    ForeignKey,
     Model,
     Table,
+    ForeignKey,
+    BelongsTo,
+    BelongsToMany,
+    HasMany,
 } from "sequelize-typescript";
 import { Photo } from "src/photos/models/photo.model";
 import { User } from "src/users/model/user.model";
 
-interface CommentAttr {
-    user_id: number;
-    photo_id: number;
-    text: string;
+interface photoAttrs {
+    id: string;
+    title: string;
+    link: string;
 }
 
-@Table({ tableName: "comments" })
-export class Comment extends Model<Comment, CommentAttr> {
+@Table({ tableName: "comment" })
+export class Comment extends Model<Comment, photoAttrs> {
     @Column({
         type: DataType.INTEGER,
-        autoIncrement: true,
         primaryKey: true,
+        autoIncrement: true,
     })
-    id: number;
-
-    @ForeignKey(() => User)
-    @Column({
-        type: DataType.INTEGER,
-        allowNull: false,
-    })
-    user_id: number;
-
-    @ForeignKey(() => Photo)
-    @Column({
-        type: DataType.INTEGER,
-        allowNull: false,
-    })
-    photo_id: number;
+    id: string;
 
     @Column({
         type: DataType.TEXT,
@@ -44,8 +32,17 @@ export class Comment extends Model<Comment, CommentAttr> {
     })
     text: string;
 
-    @BelongsTo(() => User)
-    user: User;
+    @ForeignKey(() => Photo)
+    @Column({
+        type: DataType.INTEGER,
+    })
+    photo_id: number;
+
+    @ForeignKey(() => User)
+    @Column({
+        type: DataType.INTEGER,
+    })
+    user_id: number;
 
     @BelongsTo(() => Photo)
     photo: Photo;

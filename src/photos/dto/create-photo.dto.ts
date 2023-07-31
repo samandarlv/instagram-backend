@@ -1,4 +1,5 @@
-import { User } from "src/users/model/user.model";
+import { ApiProperty } from "@nestjs/swagger";
+import { User } from "../../users/model/user.model";
 import {
     ArrayMaxSize,
     ArrayMinSize,
@@ -8,14 +9,17 @@ import {
 } from "class-validator";
 
 export class CreatePhotoDto {
+    @ApiProperty({ example: "nimadir", description: "Rasm mavzusi" })
     @IsNotEmpty()
     @IsString()
     title: string;
 
+    @ApiProperty({ example: "http://img/image1", description: "Rasm linki" })
     @IsNotEmpty()
     @IsString()
     link: string;
 
+    @ApiProperty({ example: "[1,2]", description: "Foydalanuvchilar" })
     @IsNotEmpty()
     @ArrayNotEmpty()
     @ArrayMinSize(1)

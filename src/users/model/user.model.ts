@@ -6,14 +6,14 @@ import {
     BelongsToMany,
     HasMany,
 } from "sequelize-typescript";
-import { Like } from "src/likes/model/like.model";
-import { Photo } from "src/photos/models/photo.model";
-import { UserPhoto } from "src/photos/models/userPhoto.model";
+import { Like } from "../../likes/model/like.model";
+import { Photo } from "../../photos/models/photo.model";
+import { UserPhoto } from "../../photos/models/userPhoto.model";
 
 interface userAttrs {
-    id: string;
     name: string;
-    description: string;
+    username: string;
+    hashed_password: string;
 }
 
 @Table({ tableName: "users" })
@@ -32,13 +32,14 @@ export class User extends Model<User, userAttrs> {
 
     @Column({
         type: DataType.TEXT,
+        unique: true,
     })
     username: string;
 
     @Column({
         type: DataType.STRING,
     })
-    password: string;
+    hashed_password: string;
 
     // photo modeli Many to Many relationship qilish uchun
     @BelongsToMany(() => Photo, () => UserPhoto)

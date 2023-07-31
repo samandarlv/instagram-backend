@@ -5,13 +5,16 @@ import { SequelizeModule } from "@nestjs/sequelize";
 import { ConfigModule } from "@nestjs/config";
 import { AuthModule } from "./auth/auth.module";
 import { LikesModule } from "./likes/likes.module";
-import { CommentsModule } from "./comments/comments.module";
+import { CommentModule } from "./comment/comment.module";
 import { User } from "./users/model/user.model";
 import { Photo } from "./photos/models/photo.model";
 import { UserPhoto } from "./photos/models/userPhoto.model";
 import { JwtModule } from "@nestjs/jwt";
-import { Comment } from "./comments/model/comment.model";
+import { Comment } from "./comment/models/comment.model";
 import { Like } from "./likes/model/like.model";
+import { Asset } from "./assets/model/asset.model";
+import { Role } from "./roles/models/role.model";
+import { UserRoles } from "./roles/models/user-role.model";
 
 @Module({
     imports: [
@@ -25,11 +28,18 @@ import { Like } from "./likes/model/like.model";
             username: process.env.POSTGRES_USER,
             password: String(process.env.POSTGRES_PASSWORD),
             database: process.env.POSTGRES_DB,
-            models: [User, Photo, UserPhoto, Comment, Like],
+            models: [
+                User,
+                Photo,
+                UserPhoto,
+                Comment,
+                Like,
+                Asset,
+                Role,
+                UserRoles,
+            ],
             autoLoadModels: true,
-            logging: (res) => {
-                console.log(res);
-            },
+            logging: false,
         }),
         JwtModule.register({
             global: true,
@@ -39,7 +49,7 @@ import { Like } from "./likes/model/like.model";
         UsersModule,
         PhotosModule,
         AuthModule,
-        CommentsModule,
+        CommentModule,
         LikesModule,
     ],
     controllers: [],
